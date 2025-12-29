@@ -24,8 +24,8 @@
         .container {
             background: #ffffff;
             border-radius: 24px;
-            padding: 48px;
-            max-width: 480px;
+            padding: 36px;
+            max-width: 360px;
             width: 100%;
             box-shadow: 
                 0 20px 60px rgba(0, 0, 0, 0.08),
@@ -138,7 +138,13 @@
                 6px 6px 8px rgba(0, 0, 0, 0.2);
         }
         
-         
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            opacity: 0.95;
+        }
     </style>
 </head>
 <body>
@@ -156,12 +162,12 @@
         </div>
         
         <div class="metric">
-            <div class="metric-label">Year Goal</div>
+            <div class="metric-label">Yearly Goal</div>
             <div class="metric-value" id="stepGoal">3,650,000</div>
         </div>
         
         <div class="progress-container">
-            <div class="metric-label">Total Progress</div>
+            <div class="metric-label">Daily Progress</div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -181,7 +187,9 @@
         dateElement.textContent = today.toLocaleDateString('en-US', options);
         
         // Calculate progress
-        const totalSteps = 234004;
+        const dailySteps = 8245;
+        const stepGoal = 10000;
+        const totalSteps = 329994;
         const progress = Math.min((totalSteps / 3650000) * 100, 100);
         document.getElementById('progressBar').style.width = progress + '%';
         
@@ -190,7 +198,7 @@
         const hoursRemaining = 24 - hour;
         const currentRate = dailySteps / hour;
         const projectedSteps = dailySteps + (currentRate * hoursRemaining);
-        const probability = 85;
+        const probability = 76;
         document.getElementById('probability').textContent = probability + '%';
     </script>
 </body>
