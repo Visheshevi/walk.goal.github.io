@@ -249,7 +249,7 @@
                 document.getElementById('progressBar').style.width = progress.toFixed(1) + '%';
                 
                 // Calculate and update probability
-                const probability = calculateProbability(stepData.yearlySteps, stepData.stepGoal);
+                const probability = formatNumber(stepData.probability);
                 document.getElementById('probability').textContent = probability + '%';
                 
             } catch (error) {
