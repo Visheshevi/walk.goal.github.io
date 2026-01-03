@@ -212,16 +212,55 @@
         }
         
         // Calculate probability
+        // function calculateProbability(yearlySteps, stepGoal) {
+        //     const today = new Date();
+        //     const startOfYear = new Date(today.getFullYear(), 0, 1);
+        //     const daysElapsed = Math.floor((today - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
+        //     const totalDaysInYear = 365 + (today.getFullYear() % 4 === 0 ? 1 : 0);
+            
+        //     const currentPace = yearlySteps / daysElapsed;
+        //     const requiredPace = stepGoal / totalDaysInYear;
+            
+        //     const probability = Math.min(100, Math.round((currentPace / requiredPace) * 100));
+        //     return probability;
+        // }
         function calculateProbability(yearlySteps, stepGoal) {
             const today = new Date();
             const startOfYear = new Date(today.getFullYear(), 0, 1);
             const daysElapsed = Math.floor((today - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
             const totalDaysInYear = 365 + (today.getFullYear() % 4 === 0 ? 1 : 0);
             
-            const currentPace = yearlySteps / daysElapsed;
-            const requiredPace = stepGoal / totalDaysInYear;
+            // Use yesterday's data (n-1) for today (n)
+            const completedDays = daysElapsed - 1;
             
-            const probability = Math.min(100, Math.round((currentPace / requiredPace) * 100));
+            // If it's the first day of the year, no completed days yet
+            if (completedDays <= 0) {
+                const requiredDailyPace = stepGoal / totalDaysInYear;
+                return Math.round((10000 / requiredDailyPace) * 100); // Assumes average pace, adjust as needed
+            }
+            
+            const daysRemaining = totalDaysInYear - completedDays;
+            const stepsRemaining = stepGoal - yearlySteps;
+            
+            // If already met goal
+            if (stepsRemaining <= 0) {
+                return 100;
+            }
+            
+            // If no days remaining but haven't met goal
+            if (daysRemaining <= 0) {
+                return 0;
+            }
+            
+            // Calculate required daily pace for remaining days
+            const requiredDailyPace = stepsRemaining / daysRemaining;
+            
+            // Calculate current pace based on completed days (yesterday and before)
+            const currentPace = yearlySteps / completedDays;
+            
+            // Probability based on whether current pace meets required pace
+            const probability = Math.min(100, Math.max(0, Math.round((currentPace / requiredDailyPace) * 100)));
+            
             return probability;
         }
         
